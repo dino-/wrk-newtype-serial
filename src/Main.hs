@@ -4,9 +4,10 @@ module Main where
 
 import Control.Monad.Except
 import Data.Aeson
-import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Either ( lefts )
 import Data.String.Conv ( toS )
+import qualified Data.Text.Lazy.Encoding as TL
+import qualified Data.Text.Lazy.IO as TL
 import GHC.Generics
 import Text.Read ( readEither )
 
@@ -72,8 +73,8 @@ readContainer = do
 jsonContainerOut :: IO ()
 jsonContainerOut = do
    putStrLn "\nJSON container out"
-   BL.putStrLn . either toS encode . mkMonth $ 5
-   BL.putStrLn . either toS encode $ (ContainerJSON <$> mkMonth 5)
+   TL.putStrLn . TL.decodeUtf8 . either toS encode . mkMonth $ 5
+   TL.putStrLn . TL.decodeUtf8 . either toS encode $ (ContainerJSON <$> mkMonth 5)
    print $ lefts [ mkMonth 5 ]
 
 
